@@ -1,19 +1,19 @@
-FROM exira/base:latest
+FROM exira/base:3.3.3
 
 MAINTAINER exira.com <info@exira.com>
 
 ARG CONTAINER_UID=1001
 ARG CONTAINER_GID=1001
 
-ENV INFLUXDB_VERSION=0.11.0-1 \
+ENV INFLUXDB_VERSION=0.13.0-1 \
+    INFLUXDB_FILE=influxdb-0.13.0_linux_amd64 \
     GLIBC_VERSION=2.23-r1 \
     INFLUXDB_HOME=/data \
     CONTAINER_USER=influxdb \
     CONTAINER_GROUP=influxdb \
     PRE_CREATE_DB=**None**
 
-ENV INFLUXDB_FILE=influxdb-${INFLUXDB_VERSION}_linux_amd64 \
-    GLIBC_FILE=glibc-${GLIBC_VERSION}.apk
+ENV GLIBC_FILE=glibc-${GLIBC_VERSION}.apk
 
 RUN \
     # Install build and runtime packages
@@ -35,7 +35,7 @@ RUN \
     apk add /tmp/${GLIBC_FILE} && \
 
     # install influxdb
-    wget -O /tmp/${INFLUXDB_FILE}.tar.gz https://s3.amazonaws.com/influxdb/${INFLUXDB_FILE}.tar.gz && \
+    wget -O /tmp/${INFLUXDB_FILE}.tar.gz https://dl.influxdata.com/influxdb/releases/${INFLUXDB_FILE}.tar.gz && \
     tar xvfz /tmp/${INFLUXDB_FILE}.tar.gz -C /tmp && \
     cp /tmp/influxdb-${INFLUXDB_VERSION}/usr/bin/* /usr/bin && \
     cp -r /tmp/influxdb-${INFLUXDB_VERSION}/etc/influxdb /etc && \

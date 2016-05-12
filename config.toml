@@ -30,6 +30,7 @@ reporting-disabled = true
   # Controls if this node holds time series data shards in the cluster
   enabled = true
   dir = "/data/db"
+  engine = "tsm1"
 
   # These are the WAL settings for the storage engine >= 0.9.3
   wal-dir = "/data/wal"
@@ -54,14 +55,14 @@ reporting-disabled = true
 ### Controls non-Raft cluster behavior, which generally includes how data is
 ### shared across shards.
 [cluster]
-  write-timeout = "5s" # The time within which a write request must complete on the cluster.
+  write-timeout = "10s" # The time within which a write request must complete on the cluster.
   shard-writer-timeout = "5s" # The time within which a remote shard must respond to a write request.
 
 ### [retention]
 ### Controls the enforcement of retention policies for evicting old data.
 [retention]
   enabled = true
-  check-interval = "10m0s"
+  check-interval = "30m0s"
 
 ### [shard-precreation]
 ### Controls the precreation of shards, so they are available before data arrives.
@@ -70,8 +71,8 @@ reporting-disabled = true
 ### or partially in the past.
 [shard-precreation]
   enabled = true
-  check-interval = "10m"
-  advance-period = "30m"
+  check-interval = "10m0s"
+  advance-period = "30m0s"
 
 ### Controls the system self-monitoring, statistics and diagnostics.
 ###
@@ -121,7 +122,7 @@ reporting-disabled = true
   # will buffer points in memory if you have many coming in.
   # batch-size = 1000 # will flush if this many points get buffered
   # batch-timeout = "1s" # will flush at least this often even if we haven't hit buffer limit
-  batch-size = 1000
+  batch-size = 5000
   batch-timeout = "1s"
   templates = [
      # filter + template
